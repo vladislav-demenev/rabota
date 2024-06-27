@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Парсер цен конкурентов</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Парсер цен конкурентов</h1>
+    <form action="/" method="post">
+        <label for="product_name">Введите название товара:</label>
+        <input type="text" id="product_name" name="product_name" required>
+        <button type="submit">Получить цены</button>
+    </form>
+
+    {% if prices %}
+        <h2>Результаты для "{{ product_name }}":</h2>
+        <table>
+            <tr>
+                <th>№</th>
+                <th>Сайт</th>
+                <th>Название товара</th>
+                <th>Цена (₽)</th>
+            </tr>
+            {% for store, title, price, link in prices %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ link }}" target="_blank">{{ store }}</a></td>
+                <td>{{ title }}</td>
+                <td>{{ price / 100 }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Итоговый анализ:</h2>
+        <table>
+            <tr>
+                <th>Тип</th>
+                <th>Сайт</th>
+                <th>Цена (₽)</th>
+            </tr>
+            <tr>
+                <td>Минимальная цена</td>
+                <td><a href="{{ min_link }}" target="_blank">{{ min_store }}</a></td>
+                <td>{{ min_price / 100 }}</td>
+            </tr>
+            <tr>
+                <td>Максимальная цена</td>
+                <td><a href="{{ max_link }}" target="_blank">{{ max_store }}</a></td>
+                <td>{{ max_price / 100 }}</td>
+            </tr>
+            <tr>
+                <td>Средняя цена</td>
+                <td>-</td>
+                <td>{{ avg_price / 100 }}</td>
+            </tr>
+        </table>
+    {% endif %}
+</body>
+</html>
